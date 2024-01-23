@@ -1,11 +1,13 @@
 package plg_backend_local
 
 import (
-	. "github.com/mickael-kerjean/filestash/server/common"
-	"golang.org/x/crypto/bcrypt"
+	"fmt"
 	"io"
 	"os"
 	"os/user"
+
+	. "github.com/mickael-kerjean/filestash/server/common"
+	"golang.org/x/crypto/bcrypt"
 )
 
 func init() {
@@ -60,7 +62,9 @@ func (this Local) Home() (string, error) {
 }
 
 func (this Local) Ls(path string) ([]os.FileInfo, error) {
-	f, err := SafeOsOpenFile(path, os.O_RDONLY, os.ModePerm)
+	fmt.Println("LS")
+	fmt.Println(path)
+	f, err := os.OpenFile(path, os.O_RDONLY, os.ModePerm)
 	if err != nil {
 		return nil, err
 	}
@@ -68,23 +72,23 @@ func (this Local) Ls(path string) ([]os.FileInfo, error) {
 }
 
 func (this Local) Cat(path string) (io.ReadCloser, error) {
-	return SafeOsOpenFile(path, os.O_RDONLY, os.ModePerm)
+	return os.OpenFile(path, os.O_RDONLY, os.ModePerm)
 }
 
 func (this Local) Mkdir(path string) error {
-	return SafeOsMkdir(path, 0755)
+	return os.Mkdir(path, 0755)
 }
 
 func (this Local) Rm(path string) error {
-	return SafeOsRemoveAll(path)
+	return os.RemoveAll(path)
 }
 
 func (this Local) Mv(from, to string) error {
-	return SafeOsRename(from, to)
+	return os.Rename(from, to)
 }
 
 func (this Local) Save(path string, content io.Reader) error {
-	f, err := SafeOsOpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, os.ModePerm)
+	f, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, os.ModePerm)
 	if err != nil {
 		return err
 	}
@@ -93,7 +97,7 @@ func (this Local) Save(path string, content io.Reader) error {
 }
 
 func (this Local) Touch(path string) error {
-	f, err := SafeOsOpenFile(path, os.O_WRONLY|os.O_CREATE, os.ModePerm)
+	f, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE, os.ModePerm)
 	if err != nil {
 		return err
 	}
