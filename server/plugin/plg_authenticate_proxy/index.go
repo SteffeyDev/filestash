@@ -27,7 +27,7 @@ func (this Proxy) Setup() Form {
 			{
 				Name:        "header",
 				Type:        "text",
-				Placeholder: `X-WebObjects-Remote-User`,
+				Placeholder: `X-Remote-User`,
 				Default:     "",
 				Description: "The name of the header that will contain the username",
 			},
