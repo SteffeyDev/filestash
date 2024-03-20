@@ -1,8 +1,7 @@
 # STEP1: CLONE THE CODE
 FROM alpine:latest as builder_prepare
 WORKDIR /home/
-RUN apk add git && \
-    git clone --depth 1 https://github.com/mickael-kerjean/filestash
+COPY . filestash
 
 # STEP2: BUILD THE FRONTEND
 FROM node:18-alpine AS builder_frontend
@@ -63,14 +62,12 @@ RUN apt-get update > /dev/null && \
     find /usr/share/emacs -name '*.png' | xargs rm -f && \
     find /usr/share/emacs -name '*.xpm' | xargs rm -f
 
-RUN useradd filestash && \
-    chown -R filestash:filestash /app/ && \
-    find /app/data/ -type d -exec chmod 770 {} \; && \
-    find /app/data/ -type f -exec chmod 760 {} \; && \
-    chmod 730 /app/filestash && \
+RUN chmod 777 /app && \
+    find /app -type d -exec chmod 777 {} \; && \
+    find /app -type f -exec chmod 666 {} \; && \
+    chmod 777 /app/filestash && \
     rm -rf /var/lib/apt/lists/* && \
     rm -rf /tmp/*
 
-USER filestash
 CMD ["/app/filestash"]
 EXPOSE 8334
