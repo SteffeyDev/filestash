@@ -54,12 +54,12 @@ class NewThingComponent extends React.Component {
         });
     }
 
-    onSave(e) {
+    onSave(ext, e) {
         e.preventDefault();
         if (this.state.name !== null) {
             this.props.emit(
                 "file.create",
-                pathBuilder(this.props.path, this.state.name, this.state.type),
+                pathBuilder(this.props.path, `${this.state.name}${ext}`, this.state.type),
                 this.state.type,
             );
             this.onDelete();
@@ -73,11 +73,14 @@ class NewThingComponent extends React.Component {
                     <Card className="mouse-is-hover highlight">
                         <Icon className="component_updater--icon" name={this.state.icon} />
                         <span className="file-details">
-                            <form onSubmit={this.onSave.bind(this)}>
+                            <form onSubmit={this.onSave.bind(this, "")}>
                                 <input
                                     onChange={(e) => this.setState({ name: e.target.value })}
                                     value={this.state.name}
                                     type="text" autoFocus />
+                                {this.state.type === "file" ? [".txt", ".md", ".docx", ".xlsx", ".pptx"].map((ext) => (
+                                    <button key={ext} type="button" className="extension_btn" onClick={this.onSave.bind(this, ext)}>{ext}</button>
+                                )) : null}
                             </form>
                         </span>
                         <span className="component_action">

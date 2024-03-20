@@ -37,7 +37,8 @@
         }
     }
     form{
-        display: inline-block;
+        display: inline-flex;
+        flex-wrap: wrap;
         input{
             font-size: 1em;
             border-width: 0px;
@@ -81,6 +82,9 @@
             padding: 1px 0;
             box-sizing: border-box;
         }
+        .component_icon:hover{
+            color: var(--emphasis-primary);
+        }
     }
 
     .component_checkbox{
@@ -111,6 +115,13 @@
         background: var(--primary);
         z-index: 1;
         opacity: 0.3;
+    }
+
+    .extension_btn {
+        width: auto;
+    }
+    .extension_btn:hover {
+        color: var(--emphasis-primary);
     }
 }
 
