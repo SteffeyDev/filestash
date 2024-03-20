@@ -80,4 +80,19 @@ input.component_input[readonly], textarea.component_textarea[readonly]{
         -ms-user-select: none;
         user-select: none;
     }
+    &:hover span {
+        background-color: rgba(0, 0, 0, 0.15);
+        border: 2px solid rgba(0, 0, 0, 0.15);
+    }
+}
+
+.dark-mode .component_checkbox {
+    span {
+        background-color: rgba(255, 255, 255, 0.05);
+        border: 2px solid rgba(255, 255, 255, 0.05);
+    }
+    &:hover span {
+        background-color: rgba(255, 255, 255, 0.15);
+        border: 2px solid rgba(255, 255, 255, 0.15);
+    }
 }
