@@ -155,9 +155,9 @@ func (smb Samba) LoginForm() Form {
 }
 
 func (smb Samba) Ls(path string) ([]os.FileInfo, error) {
-	if path == "/" {
+	if path == "/" && len(smb.share) > 1 {
 		f := make([]os.FileInfo, 0)
-		for key, _ := range smb.share {
+		for key := range smb.share {
 			f = append(f, File{
 				FName: key,
 				FType: "directory",
@@ -254,6 +254,14 @@ func (smb Samba) toSambaPath(path string) (*smb2.Share, string, error) {
 	if len(p) == 0 {
 		return nil, "", ErrNotAllowed
 	}
+
+	// If only one share, show its contents at the top-level
+	if len(smb.share) == 1 {
+		for k := range smb.share {
+			return smb.share[k], strings.TrimLeft(strings.Join(p, "\\"), "\\"), nil
+		}
+	}
+
 	sharename := p[0]
 	oPath := strings.TrimLeft(strings.Join(p[1:], "\\"), "\\")
 	if smb.share[sharename] == nil {
